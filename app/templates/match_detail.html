@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Match - IPL Prediction{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1>
+    {{ match.team_a }} <span class="vs">vs</span> {{ match.team_b }}
+  </h1>
+  <p class="meta">
+    <strong>Starts:</strong> {{ match.start_time }}<br />
+    <strong>Prediction deadline:</strong> {{ match.prediction_deadline }}
+  </p>
+
+  {% if error %}
+  <p class="error">{{ error }}</p>
+  {% endif %}
+
+  <h2>Live odds (pari-mutuel)</h2>
+  <div class="odds-grid">
+    <div class="odds-card">
+      <h3>{{ match.team_a }}</h3>
+      <p>Weight: {{ pools.W_A }}</p>
+      {% set mA = multipliers.multiplier_A %}
+      <p>
+        Profit multiplier:
+        {% if mA is not none %}
+        {{ "%.2f"|format(mA - 1) }}
+        {% else %}
+        -
+        {% endif %}
+      </p>
+    </div>
+    <div class="odds-card">
+      <h3>{{ match.team_b }}</h3>
+      <p>Weight: {{ pools.W_B }}</p>
+      {% set mB = multipliers.multiplier_B %}
+      <p>
+        Profit multiplier:
+        {% if mB is not none %}
+        {{ "%.2f"|format(mB - 1) }}
+        {% else %}
+        -
+        {% endif %}
+      </p>
+    </div>
+  </div>
+  <p class="meta">Total pool: {{ pools.pool }}</p>
+
+  {% if closed %}
+  <p class="badge badge-warning">Predictions are closed for this match.</p>
+  {% elif not user %}
+  <p>
+    <a href="/login" class="btn-primary">Login to place a bet</a>
+  </p>
+  {% else %}
+  <h2>Place your bet</h2>
+  <form
+    method="post"
+    action="/matches/{{ match.id }}/bet"
+    class="form-horizontal"
+  >
+    <div class="form-row">
+      <label>
+        Team
+        <select name="team" required>
+          <option value="A">{{ match.team_a }}</option>
+          <option value="B">{{ match.team_b }}</option>
+        </select>
+      </label>
+      <label>
+        Weight (₹)
+        <input
+          type="number"
+          name="weight"
+          min="200"
+          max="2000"
+          step="100"
+          required
+        />
+      </label>
+    </div>
+    <button type="submit" class="btn-primary">Place bet</button>
+  </form>
+  <p class="hint">
+    Bets must be between ₹200 and ₹2,000 and are deducted from your bankroll
+    immediately.
+  </p>
+  {% endif %}
+
+  <h2>All bets</h2>
+  {% if not bets %}
+  <p>No bets placed yet.</p>
+  {% else %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Player</th>
+        <th>Team</th>
+        <th>Weight</th>
+        <th>Placed at</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for bet in bets %}
+      <tr>
+        <td>{{ bet.user.username }}</td>
+        <td>
+          {% if bet.team == "A" %}
+          {{ match.team_a }}
+          {% else %}
+          {{ match.team_b }}
+          {% endif %}
+        </td>
+        <td>₹{{ bet.weight }}</td>
+        <td>{{ bet.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</section>
+{% endblock %}
+

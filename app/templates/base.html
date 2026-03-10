@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}IPL Prediction Game{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', path='css/styles.css') }}"
+    />
+  </head>
+  <body>
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <a href="/matches" class="brand">IPL Predictor</a>
+      </div>
+      <nav class="top-bar-right">
+        <a href="/matches">Matches</a>
+        <a href="/leaderboard">Leaderboard</a>
+        {% if request.session.get("user_id") %}
+        <a href="/bets">My Bets</a>
+        <a href="/logout">Logout</a>
+        {% else %}
+        <a href="/login">Login</a>
+        {% endif %}
+      </nav>
+    </header>
+
+    <main class="container">
+      {% if user %}
+      <div class="user-badge">
+        <span>{{ user.username }}</span>
+        <span class="pill">₹{{ "{:,}".format(user.bankroll) }}</span>
+      </div>
+      {% endif %}
+
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>
+

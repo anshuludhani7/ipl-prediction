@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Leaderboard - IPL Prediction{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1>Leaderboard</h1>
+  {% if not users %}
+  <p>No players yet.</p>
+  {% else %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Player</th>
+        <th>Bankroll</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ u.username }}</td>
+        <td>₹{{ "{:,}".format(u.bankroll) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</section>
+{% endblock %}
+

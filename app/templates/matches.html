@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Matches - IPL Prediction{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1>Matches</h1>
+  {% if not matches %}
+  <p>No matches configured yet.</p>
+  {% else %}
+  <ul class="list">
+    {% for match in matches %}
+    <li class="list-item">
+      <a href="/matches/{{ match.id }}" class="list-link">
+        <div class="list-main">
+          <div class="teams">
+            <span>{{ match.team_a }}</span>
+            <span class="vs">vs</span>
+            <span>{{ match.team_b }}</span>
+          </div>
+          <div class="meta">
+            <span>Starts: {{ match.start_time }}</span>
+            <span>Deadline: {{ match.prediction_deadline }}</span>
+          </div>
+        </div>
+        <div class="chevron">&rsaquo;</div>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</section>
+{% endblock %}
+

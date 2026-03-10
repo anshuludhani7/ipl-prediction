@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Login - IPL Prediction{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1>Login</h1>
+  <form method="post" action="/login" class="form-vertical">
+    <label>
+      Username
+      <input
+        type="text"
+        name="username"
+        placeholder="Enter your name"
+        required
+      />
+    </label>
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
+    <button type="submit" class="btn-primary">Continue</button>
+  </form>
+  <p class="hint">
+    A new player will be created automatically with a bankroll of ₹20,000.
+  </p>
+</section>
+{% endblock %}
+

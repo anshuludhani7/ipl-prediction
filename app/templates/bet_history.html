@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}My Bets - IPL Prediction{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1>My Bets</h1>
+  {% if not bets %}
+  <p>You have not placed any bets yet.</p>
+  {% else %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Match</th>
+        <th>Team</th>
+        <th>Weight</th>
+        <th>Placed at</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for bet in bets %}
+      <tr>
+        <td>
+          {{ bet.match.team_a }} vs {{ bet.match.team_b }}
+        </td>
+        <td>
+          {% if bet.team == "A" %}
+          {{ bet.match.team_a }}
+          {% else %}
+          {{ bet.match.team_b }}
+          {% endif %}
+        </td>
+        <td>₹{{ bet.weight }}</td>
+        <td>{{ bet.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</section>
+{% endblock %}
+
