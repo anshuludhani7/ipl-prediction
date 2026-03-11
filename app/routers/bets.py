@@ -1,3 +1,6 @@
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 
@@ -25,6 +28,11 @@ def bet_history(
         .order_by(models.Bet.id.desc())
         .all()
     )
+
+    ist = ZoneInfo("Asia/Kolkata")
+    for bet in bets:
+        if bet.created_at:
+            bet.created_at_ist = bet.created_at.astimezone(ist)
 
     return request.app.state.templates.TemplateResponse(
         "bet_history.html",
