@@ -113,7 +113,13 @@
           {% endif %}
         </td>
         <td>₹{{ bet.weight }}</td>
-        <td>{{ bet.created_at }}</td>
+        <td>
+          {% if bet.created_at %}
+          {{ bet.created_at.strftime("%H:%M:%S") }}
+          {% else %}
+          -
+          {% endif %}
+        </td>
       </tr>
       {% endfor %}
     </tbody>

@@ -55,6 +55,7 @@ class Bet(Base):
     # "A" or "B"
     team: Mapped[str] = mapped_column(String(1))
     weight: Mapped[int] = mapped_column(Integer)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     # Payout amount once the match is settled (can be computed later).
     payout_amount: Mapped[int | None] = mapped_column(Integer, nullable=True)
