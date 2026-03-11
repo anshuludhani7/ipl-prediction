@@ -35,7 +35,7 @@ class Match(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     team_a: Mapped[str] = mapped_column(String(64))
     team_b: Mapped[str] = mapped_column(String(64))
-    start_time: Mapped[datetime] = mapped_column(DateTime)
+    venue: Mapped[str | None] = mapped_column(String(128), nullable=True)
     prediction_deadline: Mapped[datetime] = mapped_column(DateTime, index=True)
     # result: "A", "B", or None for not yet decided
     result: Mapped[str | None] = mapped_column(

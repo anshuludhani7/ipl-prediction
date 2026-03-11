@@ -8,7 +8,7 @@
     {{ match.team_a }} <span class="vs">vs</span> {{ match.team_b }}
   </h1>
   <p class="meta">
-    <strong>Starts:</strong> {{ match.start_time }}<br />
+    <strong>Venue:</strong> {{ match.venue or "TBD" }}<br />
     <strong>Prediction deadline:</strong> {{ match.prediction_deadline }}
   </p>
 

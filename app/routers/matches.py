@@ -23,11 +23,7 @@ def list_matches(
     request: Request,
     db: Session = Depends(get_db),
 ):
-    matches = (
-        db.query(models.Match)
-        .order_by(models.Match.start_time.asc())
-        .all()
-    )
+    matches = db.query(models.Match).order_by(models.Match.id.asc()).all()
     user = get_current_user(request, db)
     return request.app.state.templates.TemplateResponse(
         "matches.html",

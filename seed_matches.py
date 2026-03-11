@@ -31,13 +31,11 @@ def create_sample_matches():
 
         matches: list[Match] = []
         for i, (team_a, team_b) in enumerate(fixtures):
-            start_time = base_date + timedelta(hours=24 * (i + 1))
-            prediction_deadline = start_time - timedelta(hours=2)
+            prediction_deadline = base_date + timedelta(hours=24 * (i + 1))
             matches.append(
                 Match(
                     team_a=team_a,
                     team_b=team_b,
-                    start_time=start_time,
                     prediction_deadline=prediction_deadline,
                 )
             )
