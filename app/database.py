@@ -15,8 +15,8 @@ class Base(DeclarativeBase):
 
 engine = create_engine(
     DATABASE_URL,
-    # Uncomment this if Render/Supabase require SSL and it’s not already in the URL:
-    # connect_args={"sslmode": "require"},
+    #  Uncomment this if Render/Supabase require SSL and it’s not already in the URL:
+     connect_args={"sslmode": "require"},
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
