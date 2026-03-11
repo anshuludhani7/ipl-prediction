@@ -27,7 +27,8 @@ app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     SessionMiddleware,
-    secret_key="change-me-in-production",
+    secret_key="replace-with-random-secret",
+    max_age=60 * 60 * 24 * 7,
 )
 
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))

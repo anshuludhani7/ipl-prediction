@@ -12,7 +12,9 @@ router = APIRouter(include_in_schema=False)
 def login_page(request: Request):
     return request.app.state.templates.TemplateResponse(
         "login.html",
-        {"request": request},
+        {
+            "request": request,
+        },
     )
 
 
@@ -20,10 +22,13 @@ def login_page(request: Request):
 def login(
     request: Request,
     username: str = Form(...),
+    pin: str = Form(...),
     db: Session = Depends(get_db),
 ):
-    username = username.strip()
-    if not username:
+    username_normalized = username.lower().strip()
+    pin = pin.strip()
+
+    if not username_normalized:
         return request.app.state.templates.TemplateResponse(
             "login.html",
             {
@@ -33,16 +38,40 @@ def login(
             status_code=400,
         )
 
+    if not (len(pin) == 4 and pin.isdigit()):
+        return request.app.state.templates.TemplateResponse(
+            "login.html",
+            {
+                "request": request,
+                "error": "PIN must be exactly 4 digits.",
+            },
+            status_code=400,
+        )
+
     user = (
         db.query(models.User)
-        .filter(models.User.username == username)
+        .filter(models.User.username == username_normalized)
         .first()
     )
     if user is None:
-        user = models.User(username=username)
-        db.add(user)
-        db.commit()
-        db.refresh(user)
+        return request.app.state.templates.TemplateResponse(
+            "login.html",
+            {
+                "request": request,
+                "error": "User not registered.",
+            },
+            status_code=400,
+        )
+
+    if user.pin != pin:
+        return request.app.state.templates.TemplateResponse(
+            "login.html",
+            {
+                "request": request,
+                "error": "Invalid PIN.",
+            },
+            status_code=400,
+        )
 
     request.session["user_id"] = user.id
 

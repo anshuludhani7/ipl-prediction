@@ -11,17 +11,28 @@
       <input
         type="text"
         name="username"
-        placeholder="Enter your name"
+        placeholder="Username"
+        required
+      />
+    </label>
+    <label>
+      PIN
+      <input
+        type="password"
+        name="pin"
+        placeholder="4-digit PIN"
+        pattern="\\d{4}"
+        maxlength="4"
         required
       />
     </label>
     {% if error %}
     <p class="error">{{ error }}</p>
     {% endif %}
-    <button type="submit" class="btn-primary">Continue</button>
+    <button type="submit" class="btn-primary">Login</button>
   </form>
   <p class="hint">
-    A new player will be created automatically with a bankroll of ₹20,000.
+    Users must be pre-created in the system. Usernames are case-insensitive.
   </p>
 </section>
 {% endblock %}

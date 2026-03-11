@@ -23,8 +23,11 @@ def list_matches(
     request: Request,
     db: Session = Depends(get_db),
 ):
-    matches = db.query(models.Match).order_by(models.Match.id.asc()).all()
     user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/login", status_code=303)
+
+    matches = db.query(models.Match).order_by(models.Match.id.asc()).all()
     return request.app.state.templates.TemplateResponse(
         "matches.html",
         {
@@ -57,6 +60,8 @@ def match_detail(
     closed = match.prediction_deadline <= now
 
     user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/login", status_code=303)
 
     return request.app.state.templates.TemplateResponse(
         "match_detail.html",
