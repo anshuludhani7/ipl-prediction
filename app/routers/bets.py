@@ -22,7 +22,7 @@ def bet_history(
     bets = (
         db.query(models.Bet)
         .filter(models.Bet.user_id == user.id)
-        .order_by(models.Bet.created_at.desc())
+        .order_by(models.Bet.id.desc())
         .all()
     )
 

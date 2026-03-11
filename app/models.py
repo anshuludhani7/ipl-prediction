@@ -23,9 +23,6 @@ class User(Base):
     username: Mapped[str] = mapped_column(String(64), unique=True, index=True)
     pin: Mapped[str] = mapped_column(String(4))
     bankroll: Mapped[int] = mapped_column(Integer, default=20000)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow
-    )
 
     bets: Mapped[list["Bet"]] = relationship("Bet", back_populates="user")
 
@@ -58,9 +55,6 @@ class Bet(Base):
     # "A" or "B"
     team: Mapped[str] = mapped_column(String(1))
     weight: Mapped[int] = mapped_column(Integer)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow
-    )
 
     # Payout amount once the match is settled (can be computed later).
     payout_amount: Mapped[int | None] = mapped_column(Integer, nullable=True)
