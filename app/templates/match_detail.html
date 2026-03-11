@@ -115,7 +115,7 @@
         <td>₹{{ bet.weight }}</td>
         <td>
           {% if bet.created_at %}
-          {{ bet.created_at.strftime("%H:%M:%S") }}
+          {{ bet.created_at.strftime("%m/%d/%Y %H:%M:%S") }}
           {% else %}
           -
           {% endif %}
