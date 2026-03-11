@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Form
@@ -57,7 +57,10 @@ def match_detail(
     ist = ZoneInfo("Asia/Kolkata")
     for bet in bets:
         if bet.created_at:
-            bet.created_at_ist = bet.created_at.astimezone(ist)
+            # Treat DB timestamp as UTC and convert to IST
+            bet.created_at_ist = bet.created_at.replace(
+                tzinfo=timezone.utc
+            ).astimezone(ist)
     pools = calculate_pools(bets)
     multipliers = calculate_multipliers(pools["W_A"], pools["W_B"])
     # Use naive UTC datetimes to match what's stored in SQLite
